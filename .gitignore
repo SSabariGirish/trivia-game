@@ -6,3 +6,6 @@ venv/
 
 # Secrets
 .env
+
+# Local Database
+local_db.sqlite

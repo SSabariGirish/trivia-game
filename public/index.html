@@ -6,7 +6,11 @@
     <title>Survival Quiz!</title>
     
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.5; }
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            line-height: 1.5; 
+        }
+        
         #game-wrapper {
             max-width: 600px;
             margin: 20px auto;
@@ -15,13 +19,22 @@
             border-radius: 8px;
             text-align: center;
         }
-        #quiz-container { text-align: left; }
+
+        #quiz-container { 
+            text-align: left; 
+        }
+
         .question-block {
             border-bottom: 2px solid #eee;
             padding-bottom: 20px;
             margin-bottom: 20px;
         }
-        .question-block ul { list-style: none; padding-left: 0; }
+
+        .question-block ul { 
+            list-style: none; 
+            padding-left: 0; 
+        }
+
         .question-block li {
             padding: 10px;
             border: 1px solid #ccc;
@@ -30,12 +43,21 @@
             cursor: pointer;
             transition: background-color 0.2s;
         }
-        .question-block li:hover { background-color: #f4f4f4; }
-        .feedback { font-size: 1.1em; font-weight: bold; margin-top: 10px; }
+
+        .question-block li:hover { 
+            background-color: #f4f4f4; 
+        }
+
+        .feedback { 
+            font-size: 1.1em; 
+            font-weight: bold; 
+            margin-top: 10px; 
+        }
+
         .correct { color: green; }
         .incorrect { color: red; }
         
-        #start-btn, #submit-topic-btn {
+        #start-btn, #submit-topic-btn, #submit-score-btn {
             font-size: 1.2em;
             padding: 10px 20px;
             cursor: pointer;
@@ -48,8 +70,40 @@
             cursor: pointer;
             width: 150px;
         }
-        #topic-selection { margin: 20px 0; }
-        #topic-input { font-size: 1.1em; padding: 10px; }
+
+        #topic-selection { 
+            margin: 20px 0; 
+        }
+
+        #topic-input, #player-name { 
+            font-size: 1.1em; 
+            padding: 10px; 
+        }
+
+        /* New styles for the leaderboard */
+        #leaderboard-container {
+            text-align: left;
+            margin-top: 30px;
+            border-top: 2px solid #eee;
+            padding-top: 15px;
+        }
+
+        #leaderboard-container ol {
+            padding-left: 20px;
+        }
+
+        #leaderboard-container li {
+            font-size: 1.1em;
+            padding: 5px;
+        }
+
+        #leaderboard-container li strong {
+            color: #333;
+        }
+
+        #submit-score-form {
+            margin-top: 20px;
+        }
     </style>
     
 </head>
@@ -78,6 +132,17 @@
         <div id="loading" style="display: none;">Generating questions...</div>
         
         <div id="quiz-container"></div>
+        
+        <div id="submit-score-form" style="display: none;">
+            <h3>Game Over! Submit your score:</h3>
+            <input type="text" id="player-name" placeholder="Enter your name">
+            <button id="submit-score-btn">Submit</button>
+        </div>
+        
+        <div id="leaderboard-container">
+            <h3>Top 10 Players</h3>
+            <ol id="leaderboard-list"></ol>
+        </div>
     </div>
 
     <script src="script.js"></script>

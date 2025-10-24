@@ -9,19 +9,30 @@ const submitTopicBtn = document.getElementById('submit-topic-btn');
 const categorySelectionDiv = document.getElementById('category-selection');
 const categoryButtons = document.querySelectorAll('.category-btn');
 
+// --- LEADERBOARD & SUBMIT ELEMENTS ---
+const submitScoreForm = document.getElementById('submit-score-form');
+const submitScoreBtn = document.getElementById('submit-score-btn');
+const playerNameInput = document.getElementById('player-name');
+const leaderboardList = document.getElementById('leaderboard-list');
+
 // --- GAME STATE ---
 let currentScore = 0;
 let questionDeck = [];
 let currentQuestionIndex = 0;
-// We'll reset this list at the start of each new game
 let availableCategories = []; 
+let gameStartTime = 0; // Timer variable
 
 // --- EVENT LISTENERS ---
 startBtn.addEventListener('click', startGame);
 submitTopicBtn.addEventListener('click', handleTopicSubmit);
+submitScoreBtn.addEventListener('click', handleScoreSubmit);
 categoryButtons.forEach(button => {
     button.addEventListener('click', handleCategorySelect);
 });
+
+// --- Load leaderboard when page loads ---
+document.addEventListener('DOMContentLoaded', fetchAndDisplayLeaderboard);
+
 
 // --- GAME FLOW FUNCTIONS ---
 
@@ -37,10 +48,14 @@ function startGame() {
     startBtn.style.display = 'none';
     quizContainer.innerHTML = '';
     categorySelectionDiv.style.display = 'none';
+    submitScoreForm.style.display = 'none'; // Hide submit form
     
     // 3. Show the first phase: Topic Input
     topicSelectionDiv.style.display = 'block';
     topicInput.value = '';
+    
+    // --- START THE TIMER! ---
+    gameStartTime = Date.now();
 }
 
 function handleTopicSubmit() {
@@ -81,7 +96,11 @@ async function fetchNewDeck(topic, levelName) {
             body: JSON.stringify(bodyPayload),
         });
 
-        if (!response.ok) { throw new Error('Failed to fetch question deck.'); }
+        if (!response.ok) {
+            // This gets the REAL error message from app.py
+            const errData = await response.json(); 
+            throw new Error(errData.error || 'Failed to fetch question deck.'); 
+        }
 
         const data = await response.json();
         let jsonString = data.quiz_data.replace(/```json/g, '').replace(/```/g, '').trim();
@@ -197,15 +216,97 @@ function showCategorySelector() {
 
 function endGame(isError) {
     if (!isError) {
-        // "Game Over" message is already shown
+        // Stop the timer and calculate time in seconds
+        const gameEndTime = Date.now();
+        const totalTimeInSeconds = (gameEndTime - gameStartTime) / 1000.0;
+        
+        // Show the submit score form
+        submitScoreForm.style.display = 'block';
+        
+        // Store time on the button itself so we can get it on submit
+        submitScoreBtn.dataset.time = totalTimeInSeconds;
+        
     } else {
         quizContainer.innerHTML += `<h2 class="incorrect">Game Over!</h2>`;
+        // On error, just show the play again button
+        startBtn.textContent = 'Play Again?';
+        startBtn.style.display = 'block';
     }
     
-    // Reset and show the "Play Again" button
-    startBtn.textContent = 'Play Again?';
-    startBtn.style.display = 'block';
     loading.style.display = 'none';
     topicSelectionDiv.style.display = 'none';
     categorySelectionDiv.style.display = 'none';
+}
+
+async function handleScoreSubmit() {
+    const name = playerNameInput.value;
+    const time = parseFloat(submitScoreBtn.dataset.time);
+    const score = currentScore;
+
+    if (!name) {
+        alert("Please enter a name!");
+        return;
+    }
+
+    try {
+        // Send data to our new backend endpoint
+        const response = await fetch('/api/submit-score', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name, score: score, time: time })
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to submit score.");
+        }
+        
+        // Score submitted! Hide the form
+        submitScoreForm.style.display = 'none';
+        playerNameInput.value = '';
+        
+        // Show the 'Play Again' button
+        startBtn.textContent = 'Play Again?';
+        startBtn.style.display = 'block';
+        
+        // Refresh the leaderboard to show the new score
+        fetchAndDisplayLeaderboard();
+
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
+}
+
+async function fetchAndDisplayLeaderboard() {
+    try {
+        const response = await fetch('/api/leaderboard');
+        if (!response.ok) {
+            throw new Error("Could not load leaderboard.");
+        }
+        
+        const scores = await response.json();
+        
+        // Clear old list
+        leaderboardList.innerHTML = '';
+        
+        if (scores.length === 0) {
+            leaderboardList.innerHTML = "<li>No scores yet. Be the first!</li>";
+            return;
+        }
+
+        // Build the new list
+        scores.forEach((entry, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span>${index + 1}.</span> 
+                <strong>${entry.name}</strong> - 
+                Score: ${entry.score} (Time: ${entry.time.toFixed(2)}s)
+            `;
+            leaderboardList.appendChild(li);
+        });
+        
+    } catch (error) {
+        console.error(error);
+        leaderboardList.innerHTML = `<li>Error loading leaderboard.</li>`;
+    }
 }
