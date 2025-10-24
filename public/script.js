@@ -152,7 +152,7 @@ function displayNextQuestion() {
                 // --- CORRECT ---
                 feedbackEl.textContent = "Correct!";
                 feedbackEl.className = 'feedback correct';
-                optionEl.style.backgroundColor = '#d4edda';
+                optionEl.classList.add('answered-correct');
                 
                 currentScore++;
                 scoreDisplay.textContent = currentScore;
@@ -162,9 +162,9 @@ function displayNextQuestion() {
                 
             } else {
                 // --- INCORRECT ---
-                feedbackEl.textContent = `Game Over! The correct answer was: ${item.answer}`;
+                feedbackEl.innerHTML = `Game Over!<br>The correct answer was: ${item.answer}`; 
                 feedbackEl.className = 'feedback incorrect';
-                optionEl.style.backgroundColor = '#f8d7da';
+                optionEl.classList.add('answered-incorrect');
                 endGame(false);
             }
         });
@@ -298,7 +298,6 @@ async function fetchAndDisplayLeaderboard() {
         scores.forEach((entry, index) => {
             const li = document.createElement('li');
             li.innerHTML = `
-                <span>${index + 1}.</span> 
                 <strong>${entry.name}</strong> - 
                 Score: ${entry.score} (Time: ${entry.time.toFixed(2)}s)
             `;

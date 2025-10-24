@@ -1,0 +1,297 @@
+/* ---
+   Theme: "Comic Pop!"
+--- */
+
+/* --- Import a comic-style font --- */
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@400;700&display=swap');
+
+/* --- Root Variables --- */
+:root {
+    --comic-red: #EF4444;       /* Red */
+    --comic-blue: #3B82F6;      /* Blue */
+    --comic-yellow: #FACC15;    /* Yellow */
+    --comic-black: #1E293B;     /* Dark Blue/Black */
+    --comic-white: #FFFFFF;
+    --comic-grey: #F1F5F9;      /* Light Grey */
+}
+
+/* --- General & Background --- */
+body {
+    font-family: 'Roboto', sans-serif;
+    /* Halftone dot pattern background */
+    background-color: var(--comic-grey);
+    background-image: radial-gradient(var(--comic-black) 1px, transparent 1px);
+    background-size: 10px 10px;
+    background-position: 5px 5px; /* Offset the dots */
+    color: var(--comic-black);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- Main Game Card --- */
+#game-wrapper {
+    max-width: 650px;
+    width: 95%;
+    margin: 20px auto;
+    padding: 2.5rem;
+    background-color: var(--comic-white);
+    border: 4px solid var(--comic-black); /* Thick black border */
+    border-radius: 12px;
+    box-shadow: 8px 8px 0px var(--comic-black); /* Hard 2D shadow */
+    text-align: center;
+    transform: rotate(-1deg); /* Slight tilt for dynamic feel */
+    transition: transform 0.2s ease;
+}
+#game-wrapper:hover {
+    transform: rotate(0deg); /* Straightens out on hover */
+}
+
+/* --- Text & Headings --- */
+h1, h2, h3 {
+    font-family: 'Bangers', cursive; /* Comic font */
+    letter-spacing: 2px;
+    color: var(--comic-black);
+    text-transform: uppercase;
+}
+
+h1 {
+    color: var(--comic-blue);
+    font-size: 3.5em; /* Big heading */
+    margin-bottom: 0.5rem;
+    text-shadow: 3px 3px 0px var(--comic-yellow); /* Yellow shadow */
+}
+h2 {
+    font-size: 2em;
+    border-bottom: 4px solid var(--comic-black);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+h3 {
+    font-size: 1.8em;
+}
+
+/* --- Buttons --- */
+button {
+    font-family: 'Bangers', cursive;
+    font-size: 1.4em; /* Bigger font */
+    letter-spacing: 1.5px;
+    padding: 10px 24px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 3px solid var(--comic-black);
+    box-shadow: 4px 4px 0px var(--comic-black); /* Hard shadow */
+    transition: all 0.15s ease-out;
+    margin: 8px;
+}
+button:active {
+    transform: translate(4px, 4px); /* Pushes button "in" */
+    box-shadow: none; /* Shadow disappears on click */
+}
+
+/* Primary Action Buttons */
+#start-btn, #submit-topic-btn, #submit-score-btn {
+    background-color: var(--comic-blue);
+    color: var(--comic-white);
+}
+#start-btn:hover, #submit-topic-btn:hover, #submit-score-btn:hover {
+    background-color: #2563EB; /* Darker blue */
+}
+
+/* Center 'Play Again' button */
+#start-btn {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+
+/* Category Buttons */
+.category-btn {
+    background-color: var(--comic-yellow);
+    color: var(--comic-black);
+}
+.category-btn:hover {
+    background-color: #FBBF24; /* Darker yellow */
+}
+
+/* --- Inputs --- */
+#topic-input, #player-name {
+    font-size: 1.1em;
+    padding: 12px 18px;
+    border: 3px solid var(--comic-black);
+    border-radius: 8px;
+    box-shadow: 4px 4px 0px var(--comic-black);
+    transition: all 0.3s ease;
+    background-color: var(--comic-white);
+    color: var(--comic-black);
+    margin-right: 10px;
+}
+#topic-input:focus, #player-name:focus {
+    outline: none;
+    background-color: #FFFBEB; /* Light yellow focus */
+}
+
+/* --- Quiz Interaction --- */
+.question-block {
+    text-align: left;
+    margin-top: 20px;
+}
+.question-block ul {
+    list-style: none;
+    padding-left: 0;
+}
+.question-block li {
+    font-weight: 700;
+    padding: 14px 20px;
+    border: 3px solid var(--comic-black);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    background-color: var(--comic-white);
+}
+.question-block li:hover {
+    background-color: var(--comic-grey);
+    transform: translateX(-5px); /* Jumps left on hover */
+}
+
+/* Text Feedback */
+.feedback {
+    font-family: 'Bangers', cursive;
+    font-size: 2.2em; /* Big feedback text */
+    font-weight: bold;
+    margin-top: 20px;
+    animation: popIn 0.3s ease-out;
+    text-align: center;
+    line-height: 1.2;
+}
+.correct {
+    color: #16A34A; /* Green */
+    text-shadow: 2px 2px 0px var(--comic-black);
+}
+.incorrect {
+    color: var(--comic-red);
+    text-shadow: 2px 2px 0px var(--comic-black);
+}
+.incorrect br { /* Add more space on line break */
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* --- Specific Answer Feedback Styles --- */
+li.answered-correct {
+    background-color: #D1FAE5; /* Light Green */
+    border-color: #10B981; /* Green */
+    color: #065F46; /* Dark Green */
+    animation: popIn 0.3s ease;
+}
+li.answered-incorrect {
+    background-color: #FEE2E2; /* Light Red */
+    border-color: var(--comic-red);
+    color: #991B1B; /* Dark Red */
+    animation: shake 0.5s ease-out; /* Shake animation */
+}
+li.answered-correct:hover, li.answered-incorrect:hover {
+    transform: none;
+    cursor: default;
+}
+
+/* --- Leaderboard --- */
+#leaderboard-container {
+    text-align: left;
+    margin-top: 40px;
+    border-top: 4px solid var(--comic-black);
+    padding: 25px;
+    background-color: var(--comic-grey);
+    border-radius: 10px;
+}
+#leaderboard-container h3 {
+    color: var(--comic-black);
+    text-align: center;
+    margin-bottom: 20px;
+}
+#leaderboard-container ol {
+    padding-left: 0;
+    list-style-type: none;
+    counter-reset: leaderboard-counter;
+}
+#leaderboard-container ol li::before {
+    counter-increment: leaderboard-counter;
+    content: counter(leaderboard-counter) ". ";
+    font-family: 'Bangers', cursive;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+    color: var(--comic-blue);
+    width: 30px;
+    display: inline-block;
+    text-align: right;
+    margin-right: 15px;
+}
+#leaderboard-container li {
+    font-size: 1.1em;
+    font-weight: 700;
+    padding: 10px 0;
+    border-bottom: 2px dashed var(--comic-black);
+    color: var(--comic-black);
+}
+#leaderboard-container li:last-child {
+    border-bottom: none;
+}
+#leaderboard-container li strong {
+    color: var(--comic-black);
+}
+
+/* --- Utility & Animations --- */
+#loading {
+    font-family: 'Bangers', cursive;
+    font-size: 1.5em;
+    color: var(--comic-black);
+    margin-top: 20px;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 600px) {
+    #game-wrapper {
+        padding: 1.5rem;
+        margin: 10px;
+        transform: rotate(0deg); /* No tilt on mobile */
+    }
+    #game-wrapper:hover {
+        transform: rotate(0deg); /* No tilt on mobile */
+    }
+    h1 { font-size: 2.5em; }
+    h2 { font-size: 1.5em; }
+    h3 { font-size: 1.3em; }
+
+    button {
+        padding: 10px 20px;
+        font-size: 1.2em;
+    }
+    .category-btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    #topic-input, #player-name {
+        width: calc(100% - 40px);
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    #submit-topic-btn {
+        width: 100%;
+    }
+}

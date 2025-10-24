@@ -3,114 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survival Quiz!</title>
-    
-    <style>
-        body { 
-            font-family: system-ui, -apple-system, sans-serif; 
-            line-height: 1.5; 
-        }
-        
-        #game-wrapper {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        #quiz-container { 
-            text-align: left; 
-        }
-
-        .question-block {
-            border-bottom: 2px solid #eee;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
-        }
-
-        .question-block ul { 
-            list-style: none; 
-            padding-left: 0; 
-        }
-
-        .question-block li {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .question-block li:hover { 
-            background-color: #f4f4f4; 
-        }
-
-        .feedback { 
-            font-size: 1.1em; 
-            font-weight: bold; 
-            margin-top: 10px; 
-        }
-
-        .correct { color: green; }
-        .incorrect { color: red; }
-        
-        #start-btn, #submit-topic-btn, #submit-score-btn {
-            font-size: 1.2em;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-        
-        #category-selection button {
-            font-size: 1.1em;
-            padding: 10px;
-            margin: 5px;
-            cursor: pointer;
-            width: 150px;
-        }
-
-        #topic-selection { 
-            margin: 20px 0; 
-        }
-
-        #topic-input, #player-name { 
-            font-size: 1.1em; 
-            padding: 10px; 
-        }
-
-        /* New styles for the leaderboard */
-        #leaderboard-container {
-            text-align: left;
-            margin-top: 30px;
-            border-top: 2px solid #eee;
-            padding-top: 15px;
-        }
-
-        #leaderboard-container ol {
-            padding-left: 20px;
-        }
-
-        #leaderboard-container li {
-            font-size: 1.1em;
-            padding: 5px;
-        }
-
-        #leaderboard-container li strong {
-            color: #333;
-        }
-
-        #submit-score-form {
-            margin-top: 20px;
-        }
-    </style>
-    
+    <title>The Trivia Gauntlet!</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div id="game-wrapper">
-        <h1>Survival Quiz!</h1>
+        <h1>The Trivia Gauntlet!</h1>
         <h2>Score: <span id="score-display">0</span></h2>
         
         <button id="start-btn">Start Game</button>
