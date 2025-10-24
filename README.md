@@ -38,7 +38,10 @@ You can run this project on your local machine for development and testing.
 * A Google Gemini API Key
 
 ### 1. Clone the Repository
-
+```bash
+# Replace with your own repository URL
+git clone [https://github.com/SSabariGirish/trivia-game.git](https://github.com/SSabariGirish/trivia-game.git)
+cd trivia-game
 
 ### 2. Set Up the Environment
 Create and activate a virtual environment:
