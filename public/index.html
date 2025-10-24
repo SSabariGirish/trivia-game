@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survival Quiz!</title>
+    
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.5; }
+        #game-wrapper {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+        }
+        #quiz-container { text-align: left; }
+        .question-block {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .question-block ul { list-style: none; padding-left: 0; }
+        .question-block li {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .question-block li:hover { background-color: #f4f4f4; }
+        .feedback { font-size: 1.1em; font-weight: bold; margin-top: 10px; }
+        .correct { color: green; }
+        .incorrect { color: red; }
+        
+        #start-btn, #submit-topic-btn {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        
+        #category-selection button {
+            font-size: 1.1em;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            width: 150px;
+        }
+        #topic-selection { margin: 20px 0; }
+        #topic-input { font-size: 1.1em; padding: 10px; }
+    </style>
+    
+</head>
+<body>
+
+    <div id="game-wrapper">
+        <h1>Survival Quiz!</h1>
+        <h2>Score: <span id="score-display">0</span></h2>
+        
+        <button id="start-btn">Start Game</button>
+        
+        <div id="topic-selection" style="display: none;">
+            <h3>To start (Level 1-10), enter a topic:</h3>
+            <input type="text" id="topic-input" placeholder="e.g., 'The Roman Empire'">
+            <button id="submit-topic-btn">Start Level 1</button>
+        </div>
+        
+        <div id="category-selection" style="display: none;">
+            <h3>Choose your next category:</h3>
+            <button class="category-btn" data-topic="Sports">Sports</button>
+            <button class="category-btn" data-topic="Movies">Movies</button>
+            <button class="category-btn" data-topic="History">History</button>
+            <button class="category-btn" data-topic="Science">Science</button>
+        </div>
+        
+        <div id="loading" style="display: none;">Generating questions...</div>
+        
+        <div id="quiz-container"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
