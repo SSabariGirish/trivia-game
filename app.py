@@ -8,26 +8,18 @@ from flask_sqlalchemy import SQLAlchemy
 load_dotenv()
 app = Flask(__name__, static_folder='public', static_url_path='')
 
-# --- SMART DATABASE CONFIGURATION ---
-# Check if we are on Render (it sets a DATABASE_URL)
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if DATABASE_URL:
-    # We are on Render, use Postgres
-    # Render's URL starts with 'postgres://', SQLAlchemy needs 'postgresql://'
     if DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 else:
-    # We are local, use a simple SQLite file
-    # This will create a file named 'local_db.sqlite' in your project folder
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///local_db.sqlite'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-# --- END OF NEW CONFIG ---
 
-# --- Database Model (Our 'Score' Table) ---
 class Score(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -42,7 +34,7 @@ class Score(db.Model):
             'time': round(self.time, 2) # Round the time for display
         }
 
-# --- Frontend Routes ---
+# --- Flask Routes ---
 @app.route('/')
 def serve_index():
     # This function now also creates the database if it doesn't exist
@@ -67,7 +59,6 @@ def generate_quiz():
             return jsonify({"error": "API key not configured"}), 500
             
         genai.configure(api_key=api_key)
-        # Using gemini-pro for stability
         model = genai.GenerativeModel('gemini-2.5-flash')
 
         if topic:
@@ -75,7 +66,7 @@ def generate_quiz():
         else:
             topic_string = "of random general knowledge trivia"
 
-        # Ask for 10 questions
+
         prompt = f"""
         Generate 10 multiple-choice quiz questions {topic_string}.
         Respond ONLY with a valid JSON array. Do not include any other text.
@@ -127,10 +118,7 @@ def submit_score():
         print(f"Error submitting score: {e}")
         return jsonify({"error": "Could not submit score"}), 500
 
-# --- Main (for local testing) ---
 if __name__ == '__main__':
-    # This command creates the table if it doesn't exist
-    # Moved to the '/' route to ensure context
     with app.app_context():
         db.create_all()
     app.run(debug=True, port=5001)
